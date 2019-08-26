@@ -63,8 +63,8 @@ namespace Game.Scripts
 			mazeTile.openDirections = direction == Direction.None ? GenerateDirection(tileType) : direction;
 			mazeTile.specialTile = tileType;
 			mazeTile.allowModification = allowModification;
-			mazeTile.X = x;
-			mazeTile.Y = y;
+			mazeTile.x = x;
+			mazeTile.y = y;
 			MazeTiles[x, y] = mazeTile;
 			mazeTile.transform.position = _grid.CellToWorld(new Vector3Int(x, y, 0));
 		}

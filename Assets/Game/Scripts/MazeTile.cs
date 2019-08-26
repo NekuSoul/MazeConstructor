@@ -1,21 +1,22 @@
-﻿using Game.Code.Enums;
+﻿using Game.Code;
+using Game.Code.Enums;
 using UnityEngine;
 
 namespace Game.Scripts
 {
 	public class MazeTile : MonoBehaviour
 	{
-		private SpriteRenderer _spriteRenderer;
+		public SpriteRenderer SpriteRenderer { get; private set; }
 
 		public Direction openDirections;
 		public TileType specialTile = TileType.None;
 		public bool allowModification;
-		public int X;
-		public int Y;
+		public int x;
+		public int y;
 
 		public void Awake()
 		{
-			_spriteRenderer = GetComponent<SpriteRenderer>();
+			SpriteRenderer = GetComponent<SpriteRenderer>();
 		}
 
 		public void Start()
@@ -27,12 +28,14 @@ namespace Game.Scripts
 		{
 			openDirections = openDirections.RotateClockwise();
 			ApplySprite();
+			Statics.GameManager.AnalyzeMaze();
 		}
 
 		public void RotateCounterClockwise()
 		{
 			openDirections = openDirections.RotateCounterClockwise();
 			ApplySprite();
+			Statics.GameManager.AnalyzeMaze();
 		}
 
 		public void ApplySprite()
@@ -40,7 +43,7 @@ namespace Game.Scripts
 			var tileType = specialTile == TileType.None ? openDirections.GetTileType() : specialTile;
 			var rotation = tileType.GetRotation(openDirections);
 
-			_spriteRenderer.sprite = tileType.ToSprite();
+			SpriteRenderer.sprite = tileType.ToSprite();
 			transform.eulerAngles = rotation.ToEulerAngles();
 		}
 

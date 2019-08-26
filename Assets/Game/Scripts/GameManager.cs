@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Game.Code;
+using Game.Code.Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,11 +13,18 @@ namespace Game.Scripts
 	{
 		public Maze maze;
 		public MazeGenerator mazeGenerator;
+		public Image analyzeButton;
 		public Text seedText;
 		public Text scoreText;
 		public string seed;
 		public int score;
 		public int highScore;
+		private bool _colorize;
+
+		public void Awake()
+		{
+			Statics.GameManager = this;
+		}
 
 		public void Start()
 		{
@@ -25,29 +33,43 @@ namespace Game.Scripts
 			mazeGenerator.seed = seed;
 			mazeGenerator.GenerateMaze();
 
-			if (seed == "EXTRAZOEY")
+			if (seed == "ECZOEY")
 				highScore = 7500;
 
 			SetSeedText();
-			SetScoreText();
+			AnalyzeMaze();
 		}
 
 		private void SetSeedText()
 		{
-			seedText.text = $"Seed{Environment.NewLine}========={Environment.NewLine}{seed}";
+			seedText.text = $"Seed{Environment.NewLine}==========={Environment.NewLine}{seed}";
 		}
 
-		private void SetScoreText()
+		private void SetScoreText(bool solvable)
 		{
 			var stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine("Highscore");
-			stringBuilder.AppendLine("=========");
+			stringBuilder.AppendLine("===========");
 			stringBuilder.AppendLine(highScore.ToString());
 			stringBuilder.AppendLine();
 			stringBuilder.AppendLine("Score");
-			stringBuilder.AppendLine("=========");
-			stringBuilder.AppendLine(score > 0 ? score.ToString() : "INVALID");
+			stringBuilder.AppendLine("===========");
+			stringBuilder.AppendLine(score.ToString());
+			if (!solvable)
+			{
+				stringBuilder.AppendLine();
+				stringBuilder.AppendLine("Exit not");
+				stringBuilder.AppendLine("reachable.");
+			}
+
 			scoreText.text = stringBuilder.ToString();
+		}
+
+		public void ToggleColorize()
+		{
+			_colorize = !_colorize;
+			analyzeButton.color = _colorize ? Color.gray : Color.white;
+			AnalyzeMaze();
 		}
 
 		public void AnalyzeMaze()
@@ -56,10 +78,42 @@ namespace Game.Scripts
 
 			score = result.Rating;
 
-			if (score > highScore)
+			if (result.Solvable && score > highScore)
 				highScore = score;
 
-			SetScoreText();
+			for (int x = 0; x < maze.Width; x++)
+			{
+				for (int y = 0; y < maze.Height; y++)
+				{
+					Color targetColor;
+
+					if (_colorize)
+					{
+						switch (result.MazeTileClassifications[x, y])
+						{
+							case MazeTileResult.Unreachable:
+								targetColor = Color.gray;
+								break;
+							case MazeTileResult.Reachable:
+								targetColor = Color.yellow;
+								break;
+							case MazeTileResult.ShortestPath:
+								targetColor = Color.green;
+								break;
+							default:
+								throw new ArgumentOutOfRangeException();
+						}
+					}
+					else
+					{
+						targetColor = Color.white;
+					}
+
+					maze.MazeTiles[x, y].SpriteRenderer.color = targetColor;
+				}
+			}
+
+			SetScoreText(result.Solvable);
 		}
 
 		public void BackToMenu()

@@ -15,7 +15,7 @@ public class MenuScript : MonoBehaviour
 
     public void PlayChallenge()
     {
-        Statics.Seed = "EXTRAZOEY";
+        Statics.Seed = "ECZOEY";
         SceneManager.LoadScene("Ingame");
     }
 }

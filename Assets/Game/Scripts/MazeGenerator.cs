@@ -11,7 +11,7 @@ namespace Game.Scripts
 	{
 		private Maze _maze;
 
-		public string seed = "ExtraCredits";
+		public string seed = string.Empty;
 		public int width = 10;
 		public int height = 10;
 		public int endTiles = 8;
@@ -25,12 +25,7 @@ namespace Game.Scripts
 			_maze = GetComponent<Maze>();
 		}
 
-		public void Start()
-		{
-			GenerateMaze();
-		}
-
-		private void GenerateMaze()
+		public void GenerateMaze()
 		{
 			_maze.InitializeMaze(width, height);
 

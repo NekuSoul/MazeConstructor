@@ -58,7 +58,7 @@ namespace Game.Scripts
 
 		public void PlaceTile(int x, int y, Direction direction, TileType tileType, bool allowModification = true)
 		{
-			var mazeTile = Instantiate(mazeTilePrefab);
+			var mazeTile = Instantiate(mazeTilePrefab, transform, true);
 			mazeTile.name = $"Tile [{x}|{y}]";
 			mazeTile.openDirections = direction == Direction.None ? GenerateDirection(tileType) : direction;
 			mazeTile.specialTile = tileType;

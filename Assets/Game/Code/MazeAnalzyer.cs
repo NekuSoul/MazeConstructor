@@ -46,7 +46,7 @@ namespace Game.Code
 					if (directions.HasFlag(Direction.Up) && tileResults[currentTile.X, currentTile.Y + 1] == MazeTileResult.Unreachable)
 					{
 						var nextTile = tiles[currentTile.X, currentTile.Y + 1];
-						if (nextTile.openDirections.HasFlag(Direction.Down))
+						if (nextTile.openDirections.HasFlag(Direction.Down) && nextTile.specialTile != TileType.OuterWall)
 						{
 							tileResults[currentTile.X, currentTile.Y + 1] = MazeTileResult.Reachable;
 							nextAnalyzerStatuses.Add(new AnalyzerStatus(nextTile, analyzerStatus));
@@ -56,7 +56,7 @@ namespace Game.Code
 					if (directions.HasFlag(Direction.Down) && tileResults[currentTile.X, currentTile.Y - 1] == MazeTileResult.Unreachable)
 					{
 						var nextTile = tiles[currentTile.X, currentTile.Y - 1];
-						if (nextTile.openDirections.HasFlag(Direction.Up))
+						if (nextTile.openDirections.HasFlag(Direction.Up) && nextTile.specialTile != TileType.OuterWall)
 						{
 							tileResults[currentTile.X, currentTile.Y - 1] = MazeTileResult.Reachable;
 							nextAnalyzerStatuses.Add(new AnalyzerStatus(nextTile, analyzerStatus));
@@ -66,7 +66,7 @@ namespace Game.Code
 					if (directions.HasFlag(Direction.Left) && tileResults[currentTile.X - 1, currentTile.Y] == MazeTileResult.Unreachable)
 					{
 						var nextTile = tiles[currentTile.X - 1, currentTile.Y];
-						if (nextTile.openDirections.HasFlag(Direction.Right))
+						if (nextTile.openDirections.HasFlag(Direction.Right) && nextTile.specialTile != TileType.OuterWall)
 						{
 							tileResults[currentTile.X - 1, currentTile.Y] = MazeTileResult.Reachable;
 							nextAnalyzerStatuses.Add(new AnalyzerStatus(nextTile, analyzerStatus));
@@ -76,7 +76,7 @@ namespace Game.Code
 					if (directions.HasFlag(Direction.Right) && tileResults[currentTile.X + 1, currentTile.Y] == MazeTileResult.Unreachable)
 					{
 						var nextTile = tiles[currentTile.X + 1, currentTile.Y];
-						if (nextTile.openDirections.HasFlag(Direction.Left))
+						if (nextTile.openDirections.HasFlag(Direction.Left) && nextTile.specialTile != TileType.OuterWall)
 						{
 							tileResults[currentTile.X + 1, currentTile.Y] = MazeTileResult.Reachable;
 							nextAnalyzerStatuses.Add(new AnalyzerStatus(nextTile, analyzerStatus));
@@ -86,6 +86,14 @@ namespace Game.Code
 			}
 
 			mazeAnalyzerResult.MazeTileClassifications = tileResults;
+
+			// Calculate rating
+
+			mazeAnalyzerResult.Rating += tileResults.Cast<MazeTileResult>().Count(r => r == MazeTileResult.ShortestPath) * 100;
+
+			if (mazeAnalyzerResult.Rating > 0)
+				mazeAnalyzerResult.Rating += tileResults.Cast<MazeTileResult>().Count(r => r == MazeTileResult.Reachable) * 50;
+
 			return mazeAnalyzerResult;
 		}
 

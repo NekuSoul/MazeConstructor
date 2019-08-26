@@ -20,11 +20,12 @@
             <e p="Statics.cs" t="Include" />
           </e>
           <e p="Scripts" t="Include">
+            <e p="GameManager.cs" t="Include" />
             <e p="Maze.cs" t="Include" />
             <e p="MazeGenerator.cs" t="Include" />
             <e p="MazeSpriteManager.cs" t="Include" />
             <e p="MazeTile.cs" t="Include" />
-            <e p="ValidateButton.cs" t="Include" />
+            <e p="MenuScript.cs" t="Include" />
           </e>
         </e>
       </e>

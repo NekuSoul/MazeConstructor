@@ -1,5 +1,4 @@
-﻿using System;
-using Game.Code.Enums;
+﻿using Game.Code.Enums;
 using UnityEngine;
 
 namespace Game.Scripts
@@ -11,6 +10,8 @@ namespace Game.Scripts
 		public Direction openDirections;
 		public TileType specialTile = TileType.None;
 		public bool allowModification;
+		public int X;
+		public int Y;
 
 		public void Awake()
 		{
@@ -50,13 +51,13 @@ namespace Game.Scripts
 
 			if (Input.GetMouseButtonDown(0))
 			{
-				RotateCounterClockwise();
+				RotateClockwise();
 				ApplySprite();
 			}
 
 			if (Input.GetMouseButtonDown(1))
 			{
-				RotateClockwise();
+				RotateCounterClockwise();
 				ApplySprite();
 			}
 		}

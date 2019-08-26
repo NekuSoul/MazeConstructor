@@ -1,8 +1,9 @@
 namespace Game.Code.Enums
 {
-	public enum MazeTileClassification
+	public enum MazeTileResult
 	{
 		Unreachable,
+		Reachable,
 		VisibleDeadEnd,
 		DeadEnd,
 		Loop,

@@ -10,10 +10,10 @@ namespace Game.Scripts
 	{
 		public MazeTile mazeTilePrefab;
 
-		private int _width;
-		private int _height;
+		public int Width { get; private set; }
+		public int Height { get; private set; }
 		private Grid _grid;
-		private MazeTile[,] _mazeTiles;
+		public MazeTile[,] MazeTiles { get; private set; }
 
 		public void Awake()
 		{
@@ -22,9 +22,9 @@ namespace Game.Scripts
 
 		public void InitializeMaze(int width, int height)
 		{
-			_width = width;
-			_height = height;
-			_mazeTiles = new MazeTile[width, height];
+			Width = width;
+			Height = height;
+			MazeTiles = new MazeTile[width, height];
 
 			PlaceOuterWall();
 		}
@@ -33,27 +33,27 @@ namespace Game.Scripts
 		{
 			// Place corners
 			PlaceTile(0, 0, Direction.Up | Direction.Right, TileType.OuterWallCorner, false);
-			PlaceTile(0, _height - 1, Direction.Down | Direction.Right, TileType.OuterWallCorner, false);
-			PlaceTile(_width - 1, 0, Direction.Up | Direction.Left, TileType.OuterWallCorner, false);
-			PlaceTile(_width - 1, _height - 1, Direction.Down | Direction.Left, TileType.OuterWallCorner, false);
+			PlaceTile(0, Height - 1, Direction.Down | Direction.Right, TileType.OuterWallCorner, false);
+			PlaceTile(Width - 1, 0, Direction.Up | Direction.Left, TileType.OuterWallCorner, false);
+			PlaceTile(Width - 1, Height - 1, Direction.Down | Direction.Left, TileType.OuterWallCorner, false);
 
 			// Place horizontal walls
-			for (var x = 1; x < _width - 1; x++)
+			for (var x = 1; x < Width - 1; x++)
 			{
 				PlaceTile(x, 0, Direction.Up, TileType.OuterWall, false);
-				PlaceTile(x, _height - 1, Direction.Down, TileType.OuterWall, false);
+				PlaceTile(x, Height - 1, Direction.Down, TileType.OuterWall, false);
 			}
 
 			// Place vertical walls
-			for (var y = 1; y < _height - 1; y++)
+			for (var y = 1; y < Height - 1; y++)
 			{
 				PlaceTile(0, y, Direction.Right, TileType.OuterWall, false);
-				PlaceTile(_width - 1, y, Direction.Left, TileType.OuterWall, false);
+				PlaceTile(Width - 1, y, Direction.Left, TileType.OuterWall, false);
 			}
 
 			// Set entrance and exit
-			_mazeTiles[0, _height - 3].specialTile = TileType.Entrance;
-			_mazeTiles[_width - 1, 2].specialTile = TileType.Exit;
+			MazeTiles[0, Height - 3].specialTile = TileType.Entrance;
+			MazeTiles[Width - 1, 2].specialTile = TileType.Exit;
 		}
 
 		public void PlaceTile(int x, int y, Direction direction, TileType tileType, bool allowModification = true)
@@ -63,7 +63,9 @@ namespace Game.Scripts
 			mazeTile.openDirections = direction == Direction.None ? GenerateDirection(tileType) : direction;
 			mazeTile.specialTile = tileType;
 			mazeTile.allowModification = allowModification;
-			_mazeTiles[x, y] = mazeTile;
+			mazeTile.X = x;
+			mazeTile.Y = y;
+			MazeTiles[x, y] = mazeTile;
 			mazeTile.transform.position = _grid.CellToWorld(new Vector3Int(x, y, 0));
 		}
 
@@ -85,7 +87,7 @@ namespace Game.Scripts
 					direction = Direction.Up | Direction.Left | Direction.Right;
 					break;
 				case TileType.FourWayIntersection:
-					direction = Direction.Up | Direction.Up | Direction.Left | Direction.Right;
+					direction = Direction.Up | Direction.Down | Direction.Left | Direction.Right;
 					break;
 				default:
 					throw new Exception();

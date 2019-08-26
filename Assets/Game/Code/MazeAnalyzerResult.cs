@@ -5,7 +5,8 @@ namespace Game.Code
 	public class MazeAnalyzerResult
 	{
 		public bool Solvable;
+		public int ShortestPath;
 		public int Rating;
-		public MazeTileClassification[,] MazeTileClassifications;
+		public MazeTileResult[,] MazeTileClassifications;
 	}
 }

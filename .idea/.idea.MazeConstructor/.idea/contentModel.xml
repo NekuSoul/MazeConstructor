@@ -11,7 +11,7 @@
           <e p="Code" t="Include">
             <e p="Enums" t="Include">
               <e p="Direction.cs" t="Include" />
-              <e p="MazeTileClassification.cs" t="Include" />
+              <e p="MazeTileResult.cs" t="Include" />
               <e p="Rotation.cs" t="Include" />
               <e p="TileType.cs" t="Include" />
             </e>
@@ -24,6 +24,7 @@
             <e p="MazeGenerator.cs" t="Include" />
             <e p="MazeSpriteManager.cs" t="Include" />
             <e p="MazeTile.cs" t="Include" />
+            <e p="ValidateButton.cs" t="Include" />
           </e>
         </e>
       </e>

@@ -1,21 +1,52 @@
-﻿using Game.Code;
+﻿using System.Collections;
+using Game.Code;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MenuScript : MonoBehaviour
+namespace Game.Scripts
 {
-    public InputField seedInputField;
-    
-    public void PlaySeed()
-    {
-        Statics.Seed = seedInputField.text;
-        SceneManager.LoadScene("Ingame");
-    }
+	public class MenuScript : MonoBehaviour
+	{
+		public InputField seedInputField;
+		public AudioSource audioSource;
 
-    public void PlayChallenge()
-    {
-        Statics.Seed = "ECZOEY";
-        SceneManager.LoadScene("Ingame");
-    }
+		public void PlaySeed()
+		{
+			StartCoroutine(PlaySeedInternal());
+		}
+
+		private IEnumerator PlaySeedInternal()
+		{
+			audioSource.Play();
+			yield return new WaitUntil(() => !audioSource.isPlaying);
+			Statics.Seed = seedInputField.text;
+			SceneManager.LoadScene("Ingame");
+		}
+	
+		public void PlayChallenge()
+		{
+			StartCoroutine(PlayChallengeInternal());
+		}
+
+		private IEnumerator PlayChallengeInternal()
+		{
+			audioSource.Play();
+			yield return new WaitUntil(() => !audioSource.isPlaying);
+			Statics.Seed = "ECZOEY";
+			SceneManager.LoadScene("Ingame");
+		}
+	
+		public void Exit()
+		{
+			StartCoroutine(ExitInternal());
+		}
+	
+		private IEnumerator ExitInternal()
+		{
+			audioSource.Play();
+			yield return new WaitUntil(() => !audioSource.isPlaying);
+			Application.Quit();
+		}
+	}
 }

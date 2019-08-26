@@ -26,6 +26,7 @@ namespace Game.Scripts
 
 		public void RotateClockwise()
 		{
+			Statics.GameManager.soundA.Play();
 			openDirections = openDirections.RotateClockwise();
 			ApplySprite();
 			Statics.GameManager.AnalyzeMaze();
@@ -33,6 +34,7 @@ namespace Game.Scripts
 
 		public void RotateCounterClockwise()
 		{
+			Statics.GameManager.soundB.Play();
 			openDirections = openDirections.RotateCounterClockwise();
 			ApplySprite();
 			Statics.GameManager.AnalyzeMaze();

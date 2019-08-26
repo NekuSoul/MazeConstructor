@@ -16,6 +16,9 @@ namespace Game.Scripts
 		public Image analyzeButton;
 		public Text seedText;
 		public Text scoreText;
+		public AudioSource soundA;
+		public AudioSource soundB;
+		public AudioSource soundC;
 		public string seed;
 		public int score;
 		public int highScore;
@@ -79,7 +82,10 @@ namespace Game.Scripts
 			score = result.Rating;
 
 			if (result.Solvable && score > highScore)
+			{
+				soundC.Play();
 				highScore = score;
+			}
 
 			for (int x = 0; x < maze.Width; x++)
 			{

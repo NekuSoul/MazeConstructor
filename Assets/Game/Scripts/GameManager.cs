@@ -19,6 +19,7 @@ namespace Game.Scripts
 		public AudioSource soundA;
 		public AudioSource soundB;
 		public AudioSource soundC;
+		public Image zoey;
 		public string seed;
 		public int score;
 		public int highScore;
@@ -85,6 +86,8 @@ namespace Game.Scripts
 			{
 				soundC.Play();
 				highScore = score;
+				if (seed == "ECZOEY")
+					zoey.gameObject.SetActive(true);
 			}
 
 			for (int x = 0; x < maze.Width; x++)
